@@ -1,0 +1,146 @@
+#box{
+width: 380px;
+height: 400px;
+margin-left:auto;
+margin-right: auto;
+position: relative;
+background: white;
+}
+
+#enterWord{
+	display: none; 
+    text-align: center; 
+    font-size = 30px;
+    color: #297ACC; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.boardtext{
+	line-height: 0px;
+}
+
+#dialogue{
+	display: block;
+	text-align:center;  
+     font-family: "Arial", sans-serif;		
+    color: #297ACC; 
+    
+}
+
+#title{
+	diplay: block;
+	text-align:center;
+     font-family: "Arial", sans-serif;		
+    color: #297ACC; 
+    
+}
+
+.board{ 
+     text-align:center;
+     font-family: "Arial", sans-serif;	
+     color: white;
+     font-size:40px;	
+     height: 80px;
+     width: 80px;
+     position: absolute;
+     background: #297ACC;
+}
+
+#giveUp{
+	display: none;
+  float: none;
+}
+
+#disp{
+	display: none;
+	text-align: center;
+  color: #297ACC;
+font-family: "Arial", sans-serif; 
+
+}
+
+.button{
+  float: left;
+	width: 90px;
+	height: 30px;
+	color: white;
+	text-align:center;
+	position: relative;
+	background-color: #297ACC;
+     font-family: "Arial", sans-serif;		  
+	font-size: 20px;
+	margin-bottom :20px;
+  margin-left: 40px;
+  padding-top: 5px;
+}
+
+ul {
+  display: none
+  list-style-type: none;
+}
+
+#submitted_wrapper{
+  display: none;
+  color:  #297ACC;
+  font-family: "Arial", sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#mode_wrapper{
+  margin-left: auto;
+  margin-right: auto;
+  width: 350px;
+  height: 30px;
+  float: none;
+}
+
+#zen{
+  margin-left: 0px;
+}
+
+#instructions{
+  display: block;
+  color:  #297ACC;  
+  font-family: "Arial", sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  width: 500px;
+  height: 300px; 
+  text-align: center;
+}
+
+#game_board {
+  display: block;
+  height: 700px;
+  width: 500px;
+  float:left;
+}
+
+#giveUp{
+  float:none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#game_info{
+  width: 300px;
+  float: right;
+}
+
+#layout{
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  height: 700px;
+}
+
+#timer{
+  display: none;
+  color:  #297ACC;  
+  font-family: "Arial", sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+}
