@@ -9,6 +9,7 @@
 function Board(width, height){
      var letterGrid = new Grid(width, height);
      letterGrid.makeAdjList();
+     var rand = new RandLetter();
 
      /* 
       * GetLetterArray: () -> String Array
@@ -28,9 +29,18 @@ function Board(width, height){
              letterGrid.arrayRep = 
              ["s","t","z","i","r","w","l","s","h","t","w","q","k","e","o","a"];
          } else {
+             //two indices are randomly chosen to be only vowels
+             var vowelIndex1 = Math.floor (Math.random() * 8);
+             var vowelIndex2 = Math.floor (Math.random() * 8) + 8;
+             letterGrid.arrayRep[vowelIndex1] = rand.getRandVowel();
+             letterGrid.arrayRep[vowelIndex2] = rand.getRandVowel();
+
+             //the remainings indices are assigned letters randomly from 
+             //the entire alphabet
              for(var i = 0; i < letterGrid.size; i++) {
-                 letterGrid.arrayRep[i] = 
-                 String.fromCharCode(97 + Math.random() * 26);
+                 if (i !== vowelIndex1 && i !== vowelIndex2){
+                     letterGrid.arrayRep[i] = rand.getRandLetter();
+                 }
              }
          }
      }

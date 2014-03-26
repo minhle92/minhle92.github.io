@@ -15,13 +15,13 @@ function customRand (dist) {
     }
     
     this.get = function () {
-        var randVal = Math.floor(Math.random() * 100);
+        var randVal = Math.floor(Math.random() * (start + 1));
         return table[randVal];
     }
 }
 
 
-function randLetter() {
+function RandLetter() {
     //probability distribution that a specific letter will show up on the grid
     //over 100 events
     var letterDist = 
