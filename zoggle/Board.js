@@ -20,14 +20,74 @@ function Board(width, height){
      }
 
      /* 
+      * extend: Number Array Array -> Number Array Array
+      * recursive function
+      * given a set of starting nodes, generates all the paths of length 
+      * 5 starting from the given nodes 
+      */
+     function extend(shorter_paths) {
+         var len = (shorter_paths[0]).length;
+         if (len === 5) {
+             return shorter_paths;
+         } else {
+             var longer_paths = new Array();
+             for (var i = 0; i < shorter_paths.length; i++) {
+                 var currPath = shorter_paths[i];
+                 var neighbors = 
+                     (letterGrid.adjList[(currPath[len - 1])]).slice();
+                 while(neighbors.length > 0) {
+                     var newNode = neighbors.pop();                            
+                     if (currPath.indexOf(newNode) === -1) {
+                         var temp = currPath.slice();                      
+                         temp.push(newNode);
+                         longer_paths.push(temp);
+                     }
+                 }
+             }
+             return extend(longer_paths);
+         }
+     }
+     //array for the initial call to extend
+     var paths = new Array();
+    
+     for (var i = 0; i < letterGrid.size; i++){
+         paths.push([i]);
+     }
+     
+     //private array that contains all paths of length 5 in Board
+     var fivePaths = extend(paths);
+
+     /* 
       * SetLetterArray: Boolean -> ()
       * if debug is set to true, the setLetterArray method fills with board  
       * with a specific array of letters rather than a random one
       */
-     this.SetLetterArray = function (debug) {
+     this.SetLetterArray = function (debug, mode) {
          if (debug){
              letterGrid.arrayRep = 
-             ["s","t","z","i","r","w","l","s","h","t","w","q","k","e","o","a"];
+             ["i","f","d","b","m","e","l","q","h","h","e","r","n","w","f","n"];
+         } else if (mode === 2) {
+             /* choose a random five letter word from the fiveLetterWords
+              * and insert it into the grid
+              */
+             var pathIndex = 
+             Math.floor (Math.random() * (fivePaths.length + 1));
+             var wordIndex = 
+             Math.floor (Math.random() * (fiveLetterWords.length + 1));
+
+             var path = fivePaths[pathIndex];
+             var word = fiveLetterWords[wordIndex];
+
+             for (var i = 0; i < 5; i++){
+                 letterGrid.arrayRep[(path[i])] = word.charAt(i);
+             }
+
+             for (var i = 0; i < letterGrid.size; i++) {
+                 if (typeof letterGrid.arrayRep[i] == 'undefined') {
+                     letterGrid.arrayRep[i] = rand.getRandLetter();
+                 }
+             }
+             
          } else {
              //two indices are randomly chosen to be only vowels
              var vowelIndex1 = Math.floor (Math.random() * 8);
@@ -56,8 +116,10 @@ function Board(width, height){
       * by previous recursive calls. 
       */
      function wordFromNode(index, word, visited) {
-         console.log("index: " + index + ", word: " + word + ", visited: " + visited);
          var neighbors = letterGrid.adjList[index];
+         //console.log("index: " + index + ", word: " + word + ", visited: "
+         //+ visited);
+
          if (word.length === 1){
              for (var i = 0; i < neighbors.length; i++) {
                  if (word[0] === letterGrid.arrayRep[neighbors[i]] && 
@@ -65,15 +127,18 @@ function Board(width, height){
                      return true;
                  }
              }
+             //console.log("dead end");
              return false;
          } else {
              for (var i = 0; i < neighbors.length; i++){
                  if (word[0] === letterGrid.arrayRep[neighbors[i]] && 
                      visited.indexOf(neighbors[i]) === -1){
-                     visited.push(neighbors[i]);
+                     console.log ("Index: " + index + ", Visited: " + visited + ", Trying neighbor " + neighbors[i]);
+                     var recurseVisited = visited.slice();
+                     recurseVisited.push(neighbors[i]);
                      if (wordFromNode(neighbors[i], 
                                       word.slice(1,word.length),
-                                      visited)){
+                                      recurseVisited)){
                          return true;
                      }
                  }
@@ -91,6 +156,7 @@ function Board(width, height){
      this.InBoard = function(input) {
          var startIndices = letterGrid.allIndicesOf(input[0]);
          for (var i = 0; i < startIndices.length; i++) {
+             console.log("Trying index " + startIndices[i]);
              var visited = new Array();
              visited.push(startIndices[i]);
              if (wordFromNode(startIndices[i], 
@@ -119,58 +185,27 @@ function Board(width, height){
             $div.css({ left: x, top: y});
         }
     }
-
-    //array for the initial call to extend
-    var paths = new Array();
-    
-    for (var i = 0; i < letterGrid.size; i++){
-        paths.push([i]);
-    }
-    
-    /* 
-     * extend: Number Array Array -> Number Array Array
-     * recursive function
-     * given a set of starting nodes, generates all the paths of length 
-     * 5 starting from the given nodes 
-     */
-    function extend(shorter_paths) {
-        var len = (shorter_paths[0]).length;
-        if (len === 5) {
-            return shorter_paths;
-        } else {
-            var longer_paths = new Array();
-            for (var i = 0; i < shorter_paths.length; i++) {
-                var currPath = shorter_paths[i];
-                var neighbors = 
-                    (letterGrid.adjList[(currPath[len - 1])]).slice();
-                while(neighbors.length > 0) {
-                    var newNode = neighbors.pop();                            
-                    if (currPath.indexOf(newNode) === -1) {
-                        var temp = currPath.slice();                      
-                        temp.push(newNode);
-                        longer_paths.push(temp);
-                    }
-                }
-            }
-            return extend(longer_paths);
-        }
-    }
-
-    //private array that contains all paths of length 5 in Board
-    var fivePaths = extend(paths);
-    
+        
     /*
      * ASSUMES: SetLetterArray has been called 
      * returns an array of all valid 5 letter words in board
      * used for focus mode
      */
-    this.GetFiveLetterWords = function(){
+    this.getFiveLetterWords = function(){
+        var focusSol = new Object();
         for (var i = 0; i < fivePaths.length; i++){
+            var path = fivePaths[i];
             var letters = new Array();
             for (var j = 0; j < 5; j++) {
-
+                letters[j] = letterGrid.arrayRep[(path[j])];
+            }
+            var fiveWord = letters.join("");
+            if (words.hasOwnProperty(fiveWord) && 
+                !focusSol.hasOwnProperty(fiveWord)){
+                focusSol[fiveWord] = 1;
             }
         }
+        return focusSol;
     }
 }
 

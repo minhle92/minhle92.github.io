@@ -12,6 +12,7 @@ background: white;
     text-align: center; 
     font-size = 30px;
     color: #297ACC; 
+     font-family: "Arial", sans-serif;		
   margin-left: auto;
   margin-right: auto;
 }
@@ -28,7 +29,18 @@ background: white;
     
 }
 
+#waitMsg{
+  padding-top: 30px;
+  display: none; 
+text-align: center; 
+    font-size = 30px  ;
+    color: #297ACC; 
+     font-family: "Arial", sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+}
 #title{
+  margin-top: 200px;
 	diplay: block;
 	text-align:center;
      font-family: "Arial", sans-serif;		
@@ -77,15 +89,15 @@ font-family: "Arial", sans-serif;
 
 ul {
   display: none
-  list-style-type: none;
 }
 
-#submitted_wrapper{
+#wordList{
   display: none;
   color:  #297ACC;
   font-family: "Arial", sans-serif;
   margin-left: auto;
   margin-right: auto;
+  height: 500px;
 }
 
 #mode_wrapper{

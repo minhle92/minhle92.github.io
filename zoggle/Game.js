@@ -1,10 +1,12 @@
 //The game prototype runs the actual word game, sets up the board and grid
 
 function Game() {
-    var board = new Board(4,4);
+    this.board = new Board(4,4);
     var game_score = 0;
     var mode = -1;
     var submittedWords = new Object();
+    var focusSol;
+    var focusInput;
 
     this.Start =  function(game_mode){
         document.getElementById('title').style.display = 'none';
@@ -13,40 +15,39 @@ function Game() {
         document.getElementById('flash').style.display = 'none';
         document.getElementById('focus').style.display = 'none';
         document.getElementById('instructions').style.display = 'none';
-        document.getElementById('enterWord').style.display = 'block';
         document.getElementById('disp').style.display = 'block';
-        
+
+        this.board.SetLetterArray(true,game_mode);        
+
         switch (game_mode) {
         case 0: //zen mode
             mode = 0;
-            console.log('zen mode started');
+            document.getElementById('enterWord').style.display = 'block';
             document.getElementById('giveUp').style.display = 'block';
-            document.getElementById('submitted_wrapper').style.display = 
+            document.getElementById('wordList').style.display = 
                 'block';
+            $('#wordList').prepend('<p> submitted words: </p>');
+            this.board.Display();
             break;
         
         case 1: //flash mode
             mode = 1;
-            document.getElementById('giveUp').style.display = 'block';
-            document.getElementById('timer').style.display = 'block';
-            document.getElementById('submitted_wrapper').style.display = 
-                'block';
-            timer = setInterval("showTime()", 1000);
+            document.getElementById('waitMsg').style.display = 'block';
+            timerLimit = 120;
+            timer = setInterval("showTime(120)", 1000);
             break;
         case 2: //focus mode
             mode = 2;
-            document.getElementById('giveUp').style.display = 'block';
-            document.getElementById('timer').style.display = 'block';
-            document.getElementById('giveUp').style.display = 'block';
+            document.getElementById('waitMsg').style.display = 'block';
+            focusSol = this.board.getFiveLetterWords();
+            timerLimit = 30;
+            timer = setInterval("showTime(30)", 1000);
             break;
         }
-
-        board.SetLetterArray(false);
-        board.Display();
     }
 
     this.GiveUp =  function(){
-        this.Stop();
+        this.Stop(false);
     }
 
      /* 
@@ -76,46 +77,82 @@ function Game() {
     this.ValidateWord = function(input) {
         if (event.keyCode == 13 && input.length != 0){
             document.getElementById('inputword').value = "";
-             if (!board.InBoard(input)){
-                 document.getElementById('disp').innerHTML = input + " is not a valid word";
-             }	else {
-                 if (submittedWords.hasOwnProperty(input)) {
-                     document.getElementById('disp').innerHTML = 
-                     input + " has already been submitted.";
-                 } else {
-                     if (words.hasOwnProperty(input)){
-                         word_score = score(input);
-                         submittedWords[input] = 1;
-                         document.getElementById('disp').innerHTML = 
-                         input + " scored " + word_score.toString() + " points.";
-                         $('ul').append('<li> ' + input + '</li>');
-                         game_score += word_score;
-                     } else { 
-                         document.getElementById('disp').innerHTML = input + " is not a word.";
-                     }
-                 }
-             }
+            
+            if (!this.board.InBoard(input)){
+                document.getElementById('disp').innerHTML = input + " is not a valid word";
+            } else if (mode === 2){
+                if (input.length !== 5) {
+                    document.getElementById('disp').innerHTML =
+                    input + " is not of correct length.";
+                } else {
+                    if (words.hasOwnProperty(input)) {
+                        document.getElementById('disp').innerHTML = "You found the word " + input + "!";
+                        focusInput = input;
+                        this.Stop(false);
+                    }
+                }
+            } else {
+                document.getElementById('list').style.display = 'block';
+                if (submittedWords.hasOwnProperty(input)) {
+                    document.getElementById('disp').innerHTML = 
+                    input + " has already been submitted.";
+                } else {
+                    if (words.hasOwnProperty(input)){
+                        word_score = score(input);
+                        submittedWords[input] = 1;
+                        document.getElementById('disp').innerHTML = 
+                        input + " scored " + word_score.toString() + " points.";
+                        $('ul').append('<li> ' + input + '</li>');
+                        game_score += word_score;
+                    } else { 
+                        document.getElementById('disp').innerHTML = input + " is not a word.";
+                    }
+                }
+            }
         }
     }
 
-    this.Stop = function() {
+    this.Stop = function(timed_out) {
         document.getElementById('enterWord').style.display = 'none';
         document.getElementById('giveUp').style.display = 'none';
         switch (mode) {
         case 0: //zen mode
-            console.log('here');
             document.getElementById('disp').innerHTML = 
                 'Your score was ' + game_score + '.</br> Thanks for playing!';
             break; 
         case 1: //flash mode
             clearInterval(timer);
             document.getElementById('timer').style.display = 'none';
-            document.getElementById('disp').innerHTML = 
-                'Your score was ' + game_score + '.</br> Thanks for playing!';
+            if (timed_out) {
+                document.getElementById('disp').innerHTML =
+                    "Time's up! Your score was " + game_score + ".</br> Thanks for playing!";
+            } else {
+                document.getElementById('disp').innerHTML = 
+                    'Your score was ' + game_score + '.</br> Thanks for playing!';
+            }
             break;
         case 2: //focus mode
-            document.getElementById('submitted_wrapper').style.display = 
-                'none';
+            clearInterval(timer);
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('wordList').style.display = 'block';
+            document.getElementById('list').style.display = 'block';
+
+            if (timed_out){
+                $('#wordList').prepend('<p>Possible words:</p>');
+                document.getElementById('disp').innerHTML = 
+                    "Time's up! </br> Thanks for playing.";
+            } else {
+                $('#wordList').prepend('<p>other valid words:</p>');
+            }
+            for (var key in focusSol) {
+                if (focusSol.hasOwnProperty(key)) {
+                    if (key === focusInput) {
+                        continue;
+                    } else {
+                        $('ul').append('<li>' + key + '</li>');
+                    }
+                }
+            }
             break;
         }
     }
@@ -123,13 +160,13 @@ function Game() {
     this.ShowDialogue = function(game_mode) {
         switch (game_mode) {
         case 0: //zen mode
-        document.getElementById('instructions').innerHTML = 'Form as many words as you can by connecting adjacent letters on the board. (Letters diagonal to each other count as adjacent.)';
+        document.getElementById('instructions').innerHTML = 'Form as many words as you can by connecting adjacent letters on the board. </br> (Letters diagonal to each other count as adjacent.)';
         break;
         case 1: //flash mode
-        document.getElementById('instructions').innerHTML = 'You have 2 minutes to form as many words as you can by connecting adjacent letters on the board. (Letters diagonal to each other count as adjacent.)';
+        document.getElementById('instructions').innerHTML = 'You have 2 minutes to form as many words as you can by connecting adjacent letters on the board.</br> (Letters diagonal to each other count as adjacent.)';
         break;
         case 2: //focus mode
-        document.getElementById('instructions').innerHTML = 'You have 2 minutes to form a 5 letter word by connecting adjacent letters on the board. (Letters diagonal to each other count as adjacent.)';
+        document.getElementById('instructions').innerHTML = 'You have 30 seconds to form a 5 letter word by connecting adjacent letters on the board.</br> (Letters diagonal to each other count as adjacent.)';
 
         break;
         }
