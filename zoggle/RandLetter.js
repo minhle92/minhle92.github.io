@@ -8,7 +8,7 @@ function customRand (dist) {
         if (dist.hasOwnProperty(key)) {
             var weight = dist[key];
             for (var i = start; i < start + weight;i++) {
-                table[i] = key;
+                this.table[i] = key;
             }
             start += weight;
         }
@@ -16,7 +16,7 @@ function customRand (dist) {
     
     this.get = function () {
         var randVal = Math.floor(Math.random() * (start + 1));
-        return table[randVal];
+        return this.table[randVal];
     }
 }
 
