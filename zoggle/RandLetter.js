@@ -63,6 +63,6 @@ function RandLetter() {
           "u": 13, 
           "y": 8};
 
-    this.getRandLetter = new customRand(letterDist);
-    this.getRandVowel = new customRand(vowelDist);
+    this.getRandLetter = new customRand(letterDist).get;
+    this.getRandVowel = new customRand(vowelDist).get;
 }
