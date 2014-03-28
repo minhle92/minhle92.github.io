@@ -16,7 +16,7 @@ function Game(gameBoard) {
         document.getElementById('instructions').style.display = 'none';
         document.getElementById('disp').style.display = 'block';
 
-        gameBoard.SetLetterArray(true,game_mode);        
+        gameBoard.SetLetterArray(false,game_mode);        
 
         switch (game_mode) {
         case 0: //zen mode
