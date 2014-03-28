@@ -31,16 +31,11 @@ function Game(gameBoard) {
         
         case 1: //flash mode
             this.mode = 1;
-            console.log("set game mode to 1");
-            console.log(this.mode);
             document.getElementById('waitMsg').style.display = 'block';
             startTime(120);
             break;
         case 2: //focus mode
             this.mode = 2;
-            console.log("set game mode to 2");
-            console.log(this.mode);
-
             document.getElementById('waitMsg').style.display = 'block';
             focusSol = gameBoard.getFiveLetterWords();
             startTime(30);
@@ -77,14 +72,11 @@ function Game(gameBoard) {
      * else the function returns an error notification
      */
     this.ValidateWord = function(input) {
-        console.log("here, mode: " + this.mode);
-        
         if (!gameBoard.InBoard(input)){
             document.getElementById('disp').innerHTML = input + " is not a valid word";
         } else {
             
             if (this.mode === 2) {
-                console.log("validating word for focus mode");
                 if (input.length !== 5) {
                     document.getElementById('disp').innerHTML =
                         input + " is not of correct length.";
@@ -140,7 +132,6 @@ function Game(gameBoard) {
             }
             break;
         case 2: //focus mode
-            console.log("stopping focus mode");
             clearInterval(timer);
             document.getElementById('timer').style.display = 'none';
             document.getElementById('wordList').style.display = 'block';

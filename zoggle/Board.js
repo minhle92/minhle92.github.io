@@ -117,9 +117,6 @@ function Board(width, height){
       */
      function wordFromNode(index, word, visited) {
          var neighbors = letterGrid.adjList[index];
-         //console.log("index: " + index + ", word: " + word + ", visited: "
-         //+ visited);
-
          if (word.length === 1){
              for (var i = 0; i < neighbors.length; i++) {
                  if (word[0] === letterGrid.arrayRep[neighbors[i]] && 
@@ -127,13 +124,11 @@ function Board(width, height){
                      return true;
                  }
              }
-             //console.log("dead end");
              return false;
          } else {
              for (var i = 0; i < neighbors.length; i++){
                  if (word[0] === letterGrid.arrayRep[neighbors[i]] && 
                      visited.indexOf(neighbors[i]) === -1){
-                     console.log ("Index: " + index + ", Visited: " + visited + ", Trying neighbor " + neighbors[i]);
                      var recurseVisited = visited.slice();
                      recurseVisited.push(neighbors[i]);
                      if (wordFromNode(neighbors[i], 
@@ -156,7 +151,6 @@ function Board(width, height){
      this.InBoard = function(input) {
          var startIndices = letterGrid.allIndicesOf(input[0]);
          for (var i = 0; i < startIndices.length; i++) {
-             console.log("Trying index " + startIndices[i]);
              var visited = new Array();
              visited.push(startIndices[i]);
              if (wordFromNode(startIndices[i], 
