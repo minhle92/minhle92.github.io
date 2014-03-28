@@ -15,7 +15,7 @@ var currentTime;
 var timeLimit;
 $('#inputword').keydown(function(event) {
         var input = document.getElementById('inputword').value;
-        console.log(event.which);
+        console.log("pressed" + event.which);
         if (event.which === 13 && input.length !== 0){
             document.getElementById('inputword').value = "";
             game.ValidateWord(input);
