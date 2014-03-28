@@ -14,6 +14,7 @@
 <script src = "zoggle/RandLetter.js"></script>
 <script src = "zoggle/Board.js"></script>
 <script src = "zoggle/Game.js"></script>
+<script type="text/javascript" src="/resources/events.js"></script>
 <body>
 <h1 id = "title"> Zoggle </h1>
 <p id = "dialogue"> Choose mode of play </p>
@@ -35,7 +36,7 @@ focus
 
   <div id = "game_board">
     <p id = "enterWord">
-      enter word: <input onkeydown="game.ValidateWord(this.value)", type="text", id="inputword">
+      enter word: <input type="text", id="inputword">
     </p>
     <p id = "disp">   </br> </p>
     <div id = "waitMsg">
