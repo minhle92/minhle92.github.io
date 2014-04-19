@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zoggle</title>
+<link href = "style.css" rel="stylesheet">
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script src = "vendor/jquery-1.11.0.js"></script>
+</head>
+<script src = "zoggle/wordfrequency.js"></script>
+<script src = "zoggle/letterpoint.js"></script>
+<script src = "zoggle/words.js"></script>
+<script src = "zoggle/fiveLetterWords.js"></script>
+<script src = "zoggle/Grid.js"></script>
+<script src = "zoggle/RandLetter.js"></script>
+<script src = "zoggle/Board.js"></script>
+<script src = "zoggle/Game.js"></script>
+<body>
+<h1 id = "title"> Zoggle </h1>
+<p id = "dialogue"> Choose mode of play </p>
+<div id = "mode_wrapper">
+<div class = "button", id = "zen", onclick = "game.Start(0)", onmouseover = "game.ShowDialogue(0)", onmouseout = "game.HideDialogue()"> 
+zen
+</div>
+<div class = "button", id = "flash", onclick = "game.Start(1)", onmouseover = "game.ShowDialogue(1)", onmouseout = "game.HideDialogue()">
+flash
+</div>
+<div class = "button", id = "focus", onclick = "game.Start(2)", onmouseover = "game.ShowDialogue(2)", onmouseout = "game.HideDialogue()">
+focus
+</div>
+</div>
+
+<div id = "instructions"> </div>
+
+<div id = "layout">
+
+  <div id = "game_board">
+    <p id = "enterWord">
+      enter word: <input type="text", id="inputword">
+    </p>
+    <p id = "disp">   </br> </p>
+    <div id = "waitMsg">
+      preparing board...
+    </div> 
+
+  </div>
+  <div id = "game_info">
+    <div id = "timer"> </div>
+    <div class = "button", id = "giveUp", onClick = "game.GiveUp()">
+      done
+    </div>
+    <div id = "wordList">
+      <ul id = "list">
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script src = "zoggle/main.js"></script>
+</body>
+</html>
